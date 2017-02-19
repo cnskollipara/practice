@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 @Scope("singleton")
-@Service()
+@Service
 public class FeasibleService {
 	
 	public int findSolution(File file) {
