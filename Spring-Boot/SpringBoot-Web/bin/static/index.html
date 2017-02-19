@@ -1,0 +1,21 @@
+<html>
+	<head>		
+	<style>
+	</style>
+		<title>MicroService Demo</title>
+		<script src="js/lib/angular.min.js"></script>
+		<script src="js/lib/angular-resource.js"></script>
+		<script src="js/lib/jquery.js"></script>
+		<script src="js/grabber.js"></script>
+		<!--script src="js/image-mapster.js"></script-->
+	</head>
+	<div id="overlay"></div>
+	<body>	
+		<div ng-controller="Ctrl">
+			<form method="POST" name = "form" action="/api/uploadFile" enctype="multipart/form-data">
+				File to upload: <input type="file" name="file">		 
+				<input type="submit" value="Upload"> Press here to upload the file!
+			</form>	
+		</div>
+	</body>
+</html>
