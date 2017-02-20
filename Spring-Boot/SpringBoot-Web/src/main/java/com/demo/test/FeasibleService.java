@@ -42,21 +42,20 @@ public class FeasibleService {
 	}
 
 	private int maxSatisfaction(int T, int[] time, int[] satisfaction, int n) {
-		// Base Case
-	    if (n == 0 || T == 0)
-	        return 0;
-	      
-	    // If time for the nth item is more than total time T, then
-	    // this item cannot be included in the optimal solution
-	    if (time[n-1] > T)
-	       return maxSatisfaction(T, time, satisfaction, n-1);
-	      
-	    // Return the maximum of two cases: 
-	    // (1) nth item included 
-	    // (2) not included
-	    else return max( satisfaction[n-1] + maxSatisfaction(T-time[n-1], time, satisfaction, n-1),
-	                     maxSatisfaction(T, time, satisfaction, n-1)
-	                      );
+        int i, w;
+        int K[][] = new int[n+1][T+1];
+        // Build table K[][] in bottom up manner
+        for (i = 0; i <= n; i++) {
+            for (w = 0; w <= T; w++) {
+                if (i==0 || w==0)
+                    K[i][w] = 0;
+                else if (time[i-1] <= w)
+                    K[i][w] = max(satisfaction[i-1] + K[i-1][w-time[i-1]],  K[i-1][w]);
+                else
+                    K[i][w] = K[i-1][w];                                                                                                     
+               }
+         }
+         return K[n][T];
 	}
 
 	private int max(int a, int b) {
