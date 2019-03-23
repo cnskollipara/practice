@@ -1,0 +1,24 @@
+dir:
+  input: C:/Users/chiranjeevi.kollipar/Desktop/practice/
+# Enabling H2 Console
+spring:
+  h2:
+    console:
+      enabled: true
+      # path: /h2console/
+  datasource:
+    url: jdbc:h2:file:~/testdb;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=TRUE;DB_CLOSE_DELAY=-1;
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate.ddl-auto: update
+processing-fee:
+  priority: 500
+  intraday: 10
+  normal:
+    sell: 100
+    withdraw: 100
+    buy: 50
+    deposit: 50

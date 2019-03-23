@@ -1,0 +1,24 @@
+SELECT 1;
+--CREATE TABLE IF NOT EXISTS t_txn_info(
+--f_id BIGINT(20) NOT NULL AUTO_INCREMENT,
+--f_ext_txn_id VARCHAR(255),
+--f_client_id VARCHAR(255),
+--f_security_id VARCHAR(255),
+--f_txn_type VARCHAR(10),
+--f_txn_date DATE,
+--f_market_val BIGINT(20),
+--f_priority VARCHAR(1),
+--f_processing_fee BIGINT(20),
+--PRIMARY KEY (f_id),
+--UNIQUE KEY f_ext_txn_id_UNQ (f_ext_txn_id),
+--);
+
+--SELECT * FROM TXN_INFO;
+--
+---- TRUNCATE TABLE TXN_INFO;
+--
+--SELECT CLIENT_ID, TXN_TYPE, TXN_DATE, PRIORITY, SUM(PROCESSING_FEE) PREOCESSING_FEE, GROUP_CONCAT(CONCAT(EXT_TXN_ID, '-', PROCESSING_FEE) SEPARATOR CHAR(10)) as DETAILS
+--FROM TXN_INFO
+--GROUP BY CLIENT_ID, TXN_TYPE, TXN_DATE, PRIORITY;
+--
+--SELECT * FROM Txn_Info t WHERE t.priority = 1 AND t.processing_Fee != 10 AND (t.txn_Type = 0 OR t.txn_Type = 1)
