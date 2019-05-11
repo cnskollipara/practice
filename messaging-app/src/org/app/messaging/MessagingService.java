@@ -57,4 +57,15 @@ public class MessagingService {
 		return userMessages;
 	}
 
+	public static int deleteUserMessage(String extId, String msgId) throws MessagingException {
+		try {
+			String query = "DELETE FROM t_message_info WHERE f_msg_owner = ? AND f_id = ?";
+			Object[] params = new Object[] { extId, Integer.parseInt(msgId) };
+			int cnt = Utility.persist(query, params);
+			return cnt;
+		} catch (Exception e) {
+			throw new MessagingException(e.getMessage());
+		}
+	}
+
 }

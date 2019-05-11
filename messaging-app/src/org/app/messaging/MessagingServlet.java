@@ -51,11 +51,6 @@ public class MessagingServlet extends HttpServlet {
 		doPost(request, response);
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -68,6 +63,33 @@ public class MessagingServlet extends HttpServlet {
 			UserMessages userMessages = MessagingService.getUserMessage(extId, searchStr);
 			res.setStatusCode("200");
 			res.setData(userMessages);
+		} catch (MessagingException e) {
+			res.setStatusMessage(e.getErrorMsg());
+			res.setStatusCode("500");
+		} catch (Exception e) {
+			res.setStatusMessage(e.getMessage());
+			res.setStatusCode("500");
+		}
+		Utility.writeResponse(response, res);
+	}
+
+	@Override
+	public void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Response<UserMessages> res = new Response<>();
+		try {
+			String extId = request.getParameter("extId");
+			String msgId = request.getParameter("msgId");
+			Validate.validateFotExtId(extId);
+			// Add/Update Message
+			int cnt = MessagingService.deleteUserMessage(extId, msgId);
+			if (cnt > 0) {
+				res.setStatusCode("200");
+				res.setStatusMessage("SUCCESS");
+			} else {
+				res.setStatusCode("500");
+				res.setStatusMessage("UNABLE_TO_ADD");
+			}
 		} catch (MessagingException e) {
 			res.setStatusMessage(e.getErrorMsg());
 			res.setStatusCode("500");

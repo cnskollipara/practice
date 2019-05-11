@@ -20,3 +20,6 @@ curl -i -X POST \
       "isPublic" : "true"
     }' \
    'http://localhost:8081/MessagingApp/message'
+
+curl -i -X DELETE \
+ 'http://localhost:8081/MessagingApp/message?extId=8021eb0a-73ee-11e9-a483-bc7737810f96'
