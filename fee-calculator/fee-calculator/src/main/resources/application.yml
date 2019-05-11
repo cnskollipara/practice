@@ -1,5 +1,10 @@
-dir:
-  input: C:/Users/chiranjeevi.kollipar/Desktop/practice/
+server.port: 8000
+
+input:
+  dir: uploaded/
+output:
+  dir: output/
+  summary-header: Client Id, Transaction Type, Transaction Date, Priority, Processing Fee
 # Enabling H2 Console
 spring:
   h2:
@@ -7,7 +12,7 @@ spring:
       enabled: true
       # path: /h2console/
   datasource:
-    url: jdbc:h2:file:~/testdb;DB_CLOSE_ON_EXIT=FALSE;IFEXISTS=TRUE;DB_CLOSE_DELAY=-1;
+    url: jdbc:h2:file:~/testdb;
     driverClassName: org.h2.Driver
     username: sa
     password:

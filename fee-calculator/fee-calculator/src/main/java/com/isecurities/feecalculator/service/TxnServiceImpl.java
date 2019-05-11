@@ -1,19 +1,10 @@
 package com.isecurities.feecalculator.service;
 
-import com.isecurities.feecalculator.bean.Priority;
-import com.isecurities.feecalculator.bean.TxnInfoStats;
-import com.isecurities.feecalculator.bean.TxnType;
-import com.isecurities.feecalculator.entity.TxnInfo;
-import com.isecurities.feecalculator.mapper.CSVMapper;
-import com.isecurities.feecalculator.mapper.TxnInfoMapper;
-import com.isecurities.feecalculator.repo.TxnInfoRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+import static com.isecurities.feecalculator.Utils.CSV;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,13 +13,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.isecurities.feecalculator.Utils.CSV;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
+import com.isecurities.feecalculator.Utils;
+import com.isecurities.feecalculator.bean.Priority;
+import com.isecurities.feecalculator.bean.TxnInfoStats;
+import com.isecurities.feecalculator.bean.TxnType;
+import com.isecurities.feecalculator.entity.TxnInfo;
+import com.isecurities.feecalculator.mapper.CSVMapper;
+import com.isecurities.feecalculator.mapper.TxnInfoMapper;
+import com.isecurities.feecalculator.repo.TxnInfoRepo;
 
 @Service
 public class TxnServiceImpl implements TxnService {
 
     @Autowired
     private TxnInfoRepo txnInfoRepo;
+
+    @Value("${output.dir}")
+    private String OUTPUT_FOLDER;
+
+    @Value("${output.summary-header}")
+    private String SUMMARY_HEADER;
 
     @Value("${processing-fee.priority}")
     private Long PRIORITY_FEE;
@@ -77,13 +87,13 @@ public class TxnServiceImpl implements TxnService {
 
             if (txn.getPriority().equals(Priority.Y)) {
                 txn.setProcessingFee(PRIORITY_FEE);
-            }else if (txn.getTxnType().equals(TxnType.Deposit)) {
+            }else if (txn.getTxnType().equals(TxnType.DEPOSIT)) {
                 txn.setProcessingFee(NORMAL_DEPOSIT_FEE);
-            }else if (txn.getTxnType().equals(TxnType.Withdraw)) {
+            }else if (txn.getTxnType().equals(TxnType.WITHDRAW)) {
                 txn.setProcessingFee(NORMAL_WITHDRAW_FEE);
-            }else if (txn.getTxnType().equals(TxnType.Buy)) {
+            }else if (txn.getTxnType().equals(TxnType.BUY)) {
                 txn.setProcessingFee(NORMAL_BUY_FEE);
-            }else if (txn.getTxnType().equals(TxnType.Sell)) {
+            }else if (txn.getTxnType().equals(TxnType.SELL)) {
                 txn.setProcessingFee(NORMAL_SELL_FEE);
             }
         });
@@ -98,15 +108,15 @@ public class TxnServiceImpl implements TxnService {
         Map<String, List<TxnInfo>> sellMap = new HashMap<>();
         txns.stream()
                 .filter(txn -> (txn.getPriority().equals(Priority.N)
-                        && (txn.getTxnType().equals(TxnType.Buy) || txn.getTxnType().equals(TxnType.Sell))))
+                        && (txn.getTxnType().equals(TxnType.BUY) || txn.getTxnType().equals(TxnType.SELL))))
                 .forEach(txn -> {
                     String intradayKey = getIntradayKey(txn);
                     List<TxnInfo> compensatoryTxns = null;
                     Map<String, List<TxnInfo>> preserveMap = null;
-                    if (txn.getTxnType().equals(TxnType.Buy)) {
+                    if (txn.getTxnType().equals(TxnType.BUY)) {
                         preserveMap = buyMap;
                         compensatoryTxns = sellMap.get(intradayKey);
-                    } else if (txn.getTxnType().equals(TxnType.Sell)) {
+                    } else if (txn.getTxnType().equals(TxnType.SELL)) {
                         preserveMap = sellMap;
                         compensatoryTxns = buyMap.get(intradayKey);
                     }
@@ -133,6 +143,20 @@ public class TxnServiceImpl implements TxnService {
 
     @Override
     public List<TxnInfoStats> getTxnSummary() {
-        return txnInfoRepo.getTxnInfoSummary();
+    	List<TxnInfoStats> infoStats = txnInfoRepo.getTxnInfoSummary();
+    	writeToFile(infoStats);
+    	return infoStats;
     }
+
+	private void writeToFile(List<TxnInfoStats> infoStats) {
+		File file = new File(OUTPUT_FOLDER);
+		boolean isCreated = file.mkdirs();
+		try(FileWriter writer = new FileWriter(OUTPUT_FOLDER + System.currentTimeMillis() + ".csv");) {
+			writer.append(SUMMARY_HEADER + Utils.LINE_SEPERATOR);
+			String data = infoStats.stream().map(TxnInfoStats::toCsvRow).collect(Collectors.joining(Utils.LINE_SEPERATOR));
+			writer.append(data);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

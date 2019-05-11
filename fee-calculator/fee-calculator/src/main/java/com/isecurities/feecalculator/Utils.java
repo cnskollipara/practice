@@ -12,6 +12,7 @@ import java.util.List;
 public class Utils {
     public static final String CSV = "csv";
     public static final String COMMA = ",";
+    public static final String LINE_SEPERATOR = "\n";
     public static final List<String> ALLOWED_FILE_TYPES = Arrays.asList(CSV);
     public static final SimpleDateFormat SDF = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -23,4 +24,8 @@ public class Utils {
         }
         return null;
     }
+
+	public static String formatDate(Date date) {
+		return SDF.format(date);
+	}
 }

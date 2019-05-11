@@ -1,46 +1,50 @@
 package com.isecurities.feecalculator.controller;
 
-import com.isecurities.feecalculator.bean.TxnInfoStats;
-import com.isecurities.feecalculator.service.TxnService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import static com.isecurities.feecalculator.Utils.ALLOWED_FILE_TYPES;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.isecurities.feecalculator.Utils.ALLOWED_FILE_TYPES;
-import static com.isecurities.feecalculator.Utils.CSV;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.isecurities.feecalculator.bean.TxnInfoStats;
+import com.isecurities.feecalculator.service.TxnService;
 
 @RestController
 @RequestMapping("/api/txn")
 public class TxnController {
 
-    @Value("${dir.input}")
+    @Value("${input.dir}")
     private String UPLOADED_FOLDER;
 
     @Autowired
     private TxnService txnService;
 
-    @PostMapping("/read")
-    public String readTxnInfo(@RequestParam("files") MultipartFile[] uploadfiles) {
-        System.out.printf("UPLOADED_FOLDER : " + UPLOADED_FOLDER);
+    @PostMapping("/load")
+    public String loadTxnSource(@RequestParam("files") MultipartFile[] uploadfiles) {
         if (uploadfiles.length < 1) {
             return "Please select a file";
         }
         for ( MultipartFile uploadedFile : uploadfiles) {
             if (uploadedFile.isEmpty()) {
-                continue; //next pls
+                continue;
             }
-            readAndLoad(uploadedFile);
+            load(uploadedFile);
         }
         return "success";
     }
 
-    private void readAndLoad(MultipartFile file) {
+    private void load(MultipartFile file) {
         try {
             String fileName = file.getOriginalFilename();
             String[] arr = fileName.split("\\.");
@@ -49,10 +53,12 @@ public class TxnController {
                 return;
             }
             byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + fileName);
+            String uri = UPLOADED_FOLDER + fileName;
+            File uploadedFile = new File(UPLOADED_FOLDER);
+            boolean isCreated = uploadedFile.mkdirs();
+            Path path = Paths.get(uri);
             Files.write(path, bytes);
             txnService.parseAndSave(path, fileType);
-
         }catch (Exception e) {
             e.printStackTrace();
         }
