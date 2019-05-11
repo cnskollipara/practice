@@ -2,7 +2,7 @@ USE messaging;
 CREATE TABLE t_message_info (
   f_id int(11) NOT NULL AUTO_INCREMENT,
   f_info text NOT NULL,
-  f_created_user int(11) NOT NULL,
+  f_msg_owner int(11) NOT NULL,
   f_is_public tinyint(1) NOT NULL DEFAULT '0',
   f_created_ts timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   f_updated_ts timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -30,7 +30,7 @@ INSERT INTO t_user_info (f_name, f_email, f_mobile, f_password, f_ext_id) VALUES
 
 ALTER TABLE t_message_info
   ADD PRIMARY KEY (f_id),
-  ADD KEY t_message_info_fk0 (f_created_user);
+  ADD KEY fk_t_message_info_t_user (f_msg_owner);
 
 ALTER TABLE t_user_info
   ADD PRIMARY KEY (f_id),
@@ -38,6 +38,6 @@ ALTER TABLE t_user_info
   ADD UNIQUE KEY f_mobile (f_mobile);
 
 ALTER TABLE t_message_info
-  ADD CONSTRAINT t_message_info_fk0 FOREIGN KEY (f_created_user) REFERENCES t_user_info (f_id);
+  ADD CONSTRAINT fk_t_message_info_t_user FOREIGN KEY (f_msg_owner) REFERENCES t_user_info (f_ext_id);
 COMMIT;
 
