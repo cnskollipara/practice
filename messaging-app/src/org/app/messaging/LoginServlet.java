@@ -20,15 +20,10 @@ import com.google.gson.JsonParser;
 public class LoginServlet extends HttpServlet {
 	
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-		/*StringBuilder sb = new StringBuilder();
-        String s;
-        while ((s = request.getReader().readLine()) != null) {
-            sb.append(s);
-        }*/
         Response<UserInfo> res = new Response<>();
-        JsonObject jsonObject = getRequestJson(request);
+        JsonObject jsonObject = Utility.getRequestJson(request);
         String email = jsonObject.get("email").getAsString();
         String pass = jsonObject.get("password").getAsString();
         UserInfo user = Validate.checkUser(email, pass);
@@ -40,11 +35,4 @@ public class LoginServlet extends HttpServlet {
         res.setData(user);
         Utility.writeResponse(response, res);
     }
-
-	private JsonObject getRequestJson(HttpServletRequest request) throws IOException {
-		JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElement = jsonParser.parse(request.getReader());
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        return jsonObject;
-	}
 }

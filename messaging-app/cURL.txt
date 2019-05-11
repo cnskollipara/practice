@@ -5,4 +5,18 @@ curl -i -X POST \
       "email" : "test01@yopmail.com",
       "password" : "test"
     }' \
-'http://localhost:8081/MessagingAp/login'
+   'http://localhost:8081/MessagingAp/login'
+
+curl -i -X GET \
+   'http://localhost:8081/MessagingApp/message?extId=8021eb0a-73ee-11e9-a483-bc7737810f96&searchStr=abc'
+
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -d \
+    '{
+      "id" : "1",
+      "info" : "Message 1",
+      "msgOwner" : "8021eb0a-73ee-11e9-a483-bc7737810f96",
+      "isPublic" : "true"
+    }' \
+   'http://localhost:8081/MessagingApp/message'
