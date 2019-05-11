@@ -1,0 +1,8 @@
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -d \
+    '{
+      "email" : "test01@yopmail.com",
+      "password" : "test"
+    }' \
+'http://localhost:8081/MessagingAp/login'
