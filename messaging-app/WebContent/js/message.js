@@ -3,7 +3,7 @@ function getMessages() {
 	var textSearch = document.getElementById("textSearch").value;
 	 $.ajax({
 	     type: "GET",
-	     url: "/messaging-app/message?extId="+getCookie("extid")+"&"+"searchStr="+textSearch,
+	     url: "/MessagingApp/message?extId="+getCookie("extid")+"&"+"searchStr="+textSearch,
 	     contentType: "application/json",
 	     async: false, //add this
 	   }).done(function ( data ) {
@@ -14,6 +14,34 @@ function getMessages() {
 	        Success = false;
 	        console.log("data");
 	 });
+}
+
+function deleteMessage(message) {
+	var msgId = message.id;
+	var extId = getCookie("extid");
+	console.log("Req. for Delete" + extId + " msgId : " + msgId);
+	if (extId === null || extId == '') {
+		alert("Your session is invalid. Please relogin");
+		return;
+	} else if (msgId === null || msgId < 1) {
+		alert("Invalid message to delete");
+		return;
+	}
+	$.ajax({
+		type : "DELETE",
+		url : "/MessagingApp/message?extId=" + extId + "&" + "msgId=" + msgId,
+		contentType : "application/json",
+		async : false, // add this
+	}).done(function(data) {
+		Success = true;
+		console.log("Successfully deleted");
+		alert("Successfully deleted");
+
+	}).fail(function(data) {
+		Success = false;
+		console.log("data");
+		alert("unable to delete msg : " + msgId);
+	});
 }
 
 window.onload = getMessages;

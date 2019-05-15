@@ -12,7 +12,7 @@ var password = document.getElementById("password").value;
  var data = JSON.stringify(requestData);
  $.ajax({
      type: "POST",
-     url: "/messaging-app/login",
+     url: "/MessagingApp/login",
      contentType: "application/json",
      data:data,
      async: false, //add this

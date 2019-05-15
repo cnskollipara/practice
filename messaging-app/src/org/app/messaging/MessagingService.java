@@ -41,6 +41,7 @@ public class MessagingService {
 			ResultSet rs = Utility.getResultSet(query, params);
 			while(rs.next()) {
 				MessageInfo info = new MessageInfo();
+				info.setId(rs.getInt("f_id"));
 				info.setInfo(rs.getString("f_info"));
 				info.setMsgOwner(rs.getString("f_msg_owner"));
 				info.setIsPublic(rs.getBoolean("f_is_public"));
