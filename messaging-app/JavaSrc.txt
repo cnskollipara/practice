@@ -1,0 +1,581 @@
+package org.app.messaging.entity;
+
+import java.sql.Timestamp;
+
+public class MessageInfo {
+	private Integer id;
+	private String info;
+	private String msgOwner;
+	private Boolean isPublic;
+	private Timestamp createdTS;
+	private Timestamp updatedTS;
+	private String agent;
+	private String comment;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getInfo() {
+		return info;
+	}
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	public String getMsgOwner() {
+		return msgOwner;
+	}
+	public void setMsgOwner(String msgOwner) {
+		this.msgOwner = msgOwner;
+	}
+	public Boolean getIsPublic() {
+		return isPublic;
+	}
+	public void setIsPublic(Boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+	public Timestamp getCreatedTS() {
+		return createdTS;
+	}
+	public void setCreatedTS(Timestamp createdTS) {
+		this.createdTS = createdTS;
+	}
+	public Timestamp getUpdatedTS() {
+		return updatedTS;
+	}
+	public void setUpdatedTS(Timestamp updatedTS) {
+		this.updatedTS = updatedTS;
+	}
+	public String getAgent() {
+		return agent;
+	}
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	@Override
+	public String toString() {
+		return "MessageInfo [id=" + id + ", info=" + info + ", msgOwner=" + msgOwner + ", isPublic=" + isPublic
+				+ ", createdTS=" + createdTS + ", updatedTS=" + updatedTS + ", agent=" + agent + ", comment=" + comment
+				+ "]";
+	}
+
+}
+*****************************
+package org.app.messaging.entity;
+
+public class Response<T> {
+	
+	private String statusCode;
+	private String statusMessage;
+	private T data;
+	public String getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+	public T getData() {
+		return data;
+	}
+	public void setData(T data) {
+		this.data = data;
+	}
+	@Override
+	public String toString() {
+		return "Response [statusCode=" + statusCode + ", statusMessage=" + statusMessage + ", data=" + data + "]";
+	}
+
+}
+*****************************
+package org.app.messaging.entity;
+
+public class UserInfo {
+	private Integer id;
+	private String extId;
+	private String name;
+	private String email;
+	private String mobile;
+	private String password;
+	private Boolean isActive;
+	private String createdTS;
+	private String updatedTS;
+	private String agent;
+	private String comment;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getExtId() {
+		return extId;
+	}
+	public void setExtId(String extId) {
+		this.extId = extId;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getMobile() {
+		return mobile;
+	}
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public Boolean getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+	public String getCreatedTS() {
+		return createdTS;
+	}
+	public void setCreatedTS(String createdTS) {
+		this.createdTS = createdTS;
+	}
+	public String getUpdatedTS() {
+		return updatedTS;
+	}
+	public void setUpdatedTS(String updatedTS) {
+		this.updatedTS = updatedTS;
+	}
+	public String getAgent() {
+		return agent;
+	}
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	@Override
+	public String toString() {
+		return "UserInfo [id=" + id + ", extId=" + extId + ", name=" + name + ", email=" + email + ", mobile=" + mobile
+				+ ", password=" + password + ", isActive=" + isActive + ", createdTS=" + createdTS + ", updatedTS="
+				+ updatedTS + ", agent=" + agent + ", comment=" + comment + "]";
+	}
+}
+*****************************
+package org.app.messaging.entity;
+
+import java.util.List;
+
+public class UserMessages {
+	
+	private String extId;
+	private List<MessageInfo> messages;
+	public String getExtId() {
+		return extId;
+	}
+	public void setExtId(String extId) {
+		this.extId = extId;
+	}
+	public List<MessageInfo> getMessages() {
+		return messages;
+	}
+	public void setMessages(List<MessageInfo> messages) {
+		this.messages = messages;
+	}
+	@Override
+	public String toString() {
+		return "UserMessages [extId=" + extId + ", messages=" + messages + "]";
+	}
+
+}
+*****************************
+package org.app.messaging;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.app.messaging.entity.Response;
+import org.app.messaging.entity.UserInfo;
+import org.app.messaging.utility.Utility;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+@WebServlet(name="LoginServlet", urlPatterns="/login")
+public class LoginServlet extends HttpServlet {
+	
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        Response<UserInfo> res = new Response<>();
+        JsonObject jsonObject = Utility.getRequestJson(request);
+        String email = jsonObject.get("email").getAsString();
+        String pass = jsonObject.get("password").getAsString();
+        UserInfo user = Validate.checkUser(email, pass);
+		res.setStatusMessage("SUCCESS");
+        if (user == null) {
+			res.setStatusMessage("USER_NOT_AVAILABLE");
+		}
+        res.setStatusCode("200");
+        res.setData(user);
+        Utility.writeResponse(response, res);
+    }
+}
+*****************************
+package org.app.messaging;
+
+public class MessagingException extends Exception {
+	private String errorMsg;
+	public MessagingException(String msg) {
+		super(msg);
+	}
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+	@Override
+	public String toString() {
+		return "MessagingException [errorMsg=" + errorMsg + "]";
+	}
+
+}
+*****************************
+package org.app.messaging;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.app.messaging.entity.MessageInfo;
+import org.app.messaging.entity.UserMessages;
+import org.app.messaging.utility.Utility;
+
+public class MessagingService {
+
+	public static int addOrUpdate(MessageInfo msgInfo) throws MessagingException {
+		try {
+			boolean isNew = (msgInfo.getId() == null || msgInfo.getId() == 0);
+			String query = null;
+			Object[] params = null;
+			if (isNew) {
+				query = "INSERT INTO t_message_info(f_info, f_msg_owner, f_is_public, f_agent) values (?, ?, ?, ?)";
+				params = new Object[] { msgInfo.getInfo(), msgInfo.getMsgOwner(), msgInfo.getIsPublic(),
+						msgInfo.getMsgOwner() };
+			} else {
+				query = "UPDATE t_message_info " + "SET " + "f_info = COALESCE(?, f_info), "
+						+ "f_is_public = COALESCE(?, f_is_public) WHERE f_id = ?";
+				params = new Object[] { msgInfo.getInfo(), msgInfo.getIsPublic(), msgInfo.getId() };
+			}
+			int cnt = Utility.persist(query, params);
+			return cnt;
+		} catch (Exception e) {
+			throw new MessagingException(e.getMessage());
+		}
+	}
+
+	public static UserMessages getUserMessage(String extId, String searchStr) throws MessagingException {
+		UserMessages userMessages = new UserMessages();
+		List<MessageInfo> messages = new ArrayList<>();
+		userMessages.setExtId(extId);
+		String query = "SELECT * FROM t_message_info WHERE (f_msg_owner = ? OR f_is_public = 1) AND (? IS NULL OR f_info LIKE ?)";
+		Object[] params = new Object[] { extId, searchStr, "%"+searchStr+"%" };
+		try {
+			ResultSet rs = Utility.getResultSet(query, params);
+			while(rs.next()) {
+				MessageInfo info = new MessageInfo();
+				info.setInfo(rs.getString("f_info"));
+				info.setMsgOwner(rs.getString("f_msg_owner"));
+				info.setIsPublic(rs.getBoolean("f_is_public"));
+				info.setCreatedTS(rs.getTimestamp("f_created_ts"));
+				info.setUpdatedTS(rs.getTimestamp("f_updated_ts"));
+				info.setAgent(rs.getString("f_agent"));
+				info.setComment(rs.getString("f_comment"));
+				messages.add(info);
+			}
+			userMessages.setMessages(messages);
+		} catch (Exception e) {
+			throw new MessagingException(e.getMessage());
+		}
+		return userMessages;
+	}
+
+	public static int deleteUserMessage(String extId, String msgId) throws MessagingException {
+		try {
+			String query = "DELETE FROM t_message_info WHERE f_msg_owner = ? AND f_id = ?";
+			Object[] params = new Object[] { extId, Integer.parseInt(msgId) };
+			int cnt = Utility.persist(query, params);
+			return cnt;
+		} catch (Exception e) {
+			throw new MessagingException(e.getMessage());
+		}
+	}
+
+}
+*****************************
+package org.app.messaging;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.app.messaging.entity.MessageInfo;
+import org.app.messaging.entity.Response;
+import org.app.messaging.entity.UserMessages;
+import org.app.messaging.utility.Utility;
+
+import com.google.gson.Gson;
+
+@WebServlet(name="MessagingServlet", urlPatterns="/message")
+public class MessagingServlet extends HttpServlet {
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Response<String> res = new Response<>();
+		Gson gson = new Gson();
+		MessageInfo msgInfo = gson.fromJson(request.getReader(), MessageInfo.class);
+		try {
+			Validate.validateUpsertMessageRequest(msgInfo);
+			// Add/Update Message
+			int cnt = MessagingService.addOrUpdate(msgInfo);
+			if (cnt > 0) {
+				res.setStatusCode("200");
+				res.setStatusMessage("SUCCESS");
+			} else {
+				res.setStatusCode("500");
+				res.setStatusMessage("UNABLE_TO_ADD");
+			}
+		} catch (MessagingException e) {
+			res.setStatusMessage(e.getErrorMsg());
+			res.setStatusCode("500");
+		} catch (Exception e) {
+			res.setStatusMessage(e.getMessage());
+			res.setStatusCode("500");
+		}
+		Utility.writeResponse(response, res);
+	}
+	
+	@Override
+	public void doPut(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
+	}
+
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Response<UserMessages> res = new Response<>();
+		try {
+			String extId = request.getParameter("extId");
+			String searchStr = request.getParameter("searchStr");
+			Validate.validateFotExtId(extId);
+			// Add/Update Message
+			UserMessages userMessages = MessagingService.getUserMessage(extId, searchStr);
+			res.setStatusCode("200");
+			res.setData(userMessages);
+		} catch (MessagingException e) {
+			res.setStatusMessage(e.getErrorMsg());
+			res.setStatusCode("500");
+		} catch (Exception e) {
+			res.setStatusMessage(e.getMessage());
+			res.setStatusCode("500");
+		}
+		Utility.writeResponse(response, res);
+	}
+
+	@Override
+	public void doDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Response<UserMessages> res = new Response<>();
+		try {
+			String extId = request.getParameter("extId");
+			String msgId = request.getParameter("msgId");
+			Validate.validateFotExtId(extId);
+			// Add/Update Message
+			int cnt = MessagingService.deleteUserMessage(extId, msgId);
+			if (cnt > 0) {
+				res.setStatusCode("200");
+				res.setStatusMessage("SUCCESS");
+			} else {
+				res.setStatusCode("500");
+				res.setStatusMessage("UNABLE_TO_ADD");
+			}
+		} catch (MessagingException e) {
+			res.setStatusMessage(e.getErrorMsg());
+			res.setStatusCode("500");
+		} catch (Exception e) {
+			res.setStatusMessage(e.getMessage());
+			res.setStatusCode("500");
+		}
+		Utility.writeResponse(response, res);
+	}
+}
+*****************************
+package org.app.messaging.utility;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+public class Utility {
+	private static Gson gson = new Gson();
+
+	public static void writeResponse(HttpServletResponse response, Object res) throws IOException {
+		String responseString = gson.toJson(res);
+		PrintWriter out = response.getWriter();
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		out.print(responseString);
+		out.flush();
+	}
+
+	public static Connection getConnection() throws ClassNotFoundException, SQLException {
+		// loading drivers for mysql
+		Class.forName("com.mysql.jdbc.Driver");
+
+		// creating connection with the database
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/messaging", "root", "");
+		return con;
+	}
+
+	public static ResultSet getResultSet(String query, Object[] params) throws SQLException, ClassNotFoundException {
+		Connection con = getConnection();
+		PreparedStatement ps = con.prepareStatement(query);
+		int i = 1;
+		for (Object param : params) {
+			if (param instanceof String) {
+				ps.setString(i++, (String) param);
+			} else if (param instanceof Boolean) {
+				ps.setBoolean(i++, (Boolean) param);
+			}
+		}
+		return ps.executeQuery();
+	}
+
+	public static int persist(String query, Object[] params) throws SQLException, ClassNotFoundException {
+		Connection con = getConnection();
+		PreparedStatement ps = con.prepareStatement(query);
+		int i = 1;
+		for (Object param : params) {
+			if (param instanceof String) {
+				ps.setString(i++, (String) param);
+			} else if (param instanceof Boolean) {
+				ps.setBoolean(i++, (Boolean) param);
+			} else if (param instanceof Integer) {
+				ps.setInt(i++, (Integer) param);
+			}
+		}
+		return ps.executeUpdate();
+	}
+
+	public static JsonObject getRequestJson(HttpServletRequest request) throws IOException {
+		JsonParser jsonParser = new JsonParser();
+		JsonElement jsonElement = jsonParser.parse(request.getReader());
+		JsonObject jsonObject = jsonElement.getAsJsonObject();
+		return jsonObject;
+	}
+}
+*****************************
+package org.app.messaging;
+
+import java.sql.ResultSet;
+
+import org.app.messaging.entity.MessageInfo;
+import org.app.messaging.entity.UserInfo;
+import org.app.messaging.utility.Utility;
+
+import com.mysql.jdbc.StringUtils;
+
+public class Validate {
+	public static UserInfo checkUser(String email, String pass) {
+		UserInfo user = null;
+		try {
+			String query = "select * from t_user_info where f_email=? and f_password=md5(?)";
+			ResultSet rs = Utility.getResultSet(query, new String[] { email, pass });
+			if (rs.next()) {
+				user = new UserInfo();
+				user.setExtId(rs.getString("f_ext_id"));
+				user.setName(rs.getString("f_name"));
+				user.setEmail(rs.getString("f_email"));
+				user.setMobile(rs.getString("f_mobile"));
+				user.setIsActive(rs.getBoolean("f_is_active"));
+				return user;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public static void validateUpsertMessageRequest(MessageInfo msgInfo) throws MessagingException {
+		String errorMsg = null;
+		if (msgInfo == null || StringUtils.isNullOrEmpty(msgInfo.getInfo())) {
+			errorMsg = "MESSAGE_EMPTY";
+		} else if (StringUtils.isNullOrEmpty(msgInfo.getMsgOwner())) {
+			errorMsg = "USER_INFO_NOT_AVAILABLE";
+		}
+
+		if (!StringUtils.isNullOrEmpty(errorMsg)) {
+			throw new MessagingException(errorMsg);
+		}
+	}
+
+	public static void validateFotExtId(String extId) throws MessagingException {
+		String errorMsg = null;
+		if (StringUtils.isNullOrEmpty(extId)) {
+			throw new MessagingException("USER_INFO_NOT_AVAILABLE");
+		}
+	}
+}
+*****************************
