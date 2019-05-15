@@ -1,11 +1,10 @@
 function getMessages() {
-	alert("onLoad")
+	console.log("onLoad"+getCookie("extid"));
 	var textSearch = document.getElementById("textSearch").value;
 	 $.ajax({
 	     type: "GET",
-	     url: "/messaging-app/message?extId="+getCookie("extId")+"&"+"searchStr="+textSearch,
+	     url: "/messaging-app/message?extId="+getCookie("extid")+"&"+"searchStr="+textSearch,
 	     contentType: "application/json",
-	     data:data,
 	     async: false, //add this
 	   }).done(function ( data ) {
 	         Success = true;

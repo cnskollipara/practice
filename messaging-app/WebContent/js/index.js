@@ -12,7 +12,7 @@ var password = document.getElementById("password").value;
  var data = JSON.stringify(requestData);
  $.ajax({
      type: "POST",
-     url: "/MessagingApp/login",
+     url: "/messaging-app/login",
      contentType: "application/json",
      data:data,
      async: false, //add this
@@ -26,7 +26,7 @@ var password = document.getElementById("password").value;
              var userData = data.data;
              console.log("userData"+userData.extId);
              
-             setCookie("extid",userData.extid,1);
+             setCookie("extid",userData.extId,1);
              setCookie("name",userData.name,1);
              setCookie("email",userData.email,1);
              window.location.href = './postmessage.html';
