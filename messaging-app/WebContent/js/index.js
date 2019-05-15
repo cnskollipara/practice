@@ -12,30 +12,30 @@ var password = document.getElementById("password").value;
  var data = JSON.stringify(requestData);
  $.ajax({
      type: "POST",
-     url: "/messaging-app/login",
+     url: "/MessagingApp/login",
      contentType: "application/json",
      data:data,
      async: false, //add this
    }).done(function ( data ) {
          Success = true;
          if(data.data == undefined || data.statusMessage == "USER_NOT_AVAILABLE"){
-        	alert("user not available");
+        	console.log("user not available");
          }else{
-        	 alert("Success"+ JSON.stringify(data));
+        	 console.log("Success"+ JSON.stringify(data));
              
              var userData = data.data;
-             alert("userData"+userData.extId);
+             console.log("userData"+userData.extId);
              
              setCookie("extid",userData.extid,1);
              setCookie("name",userData.name,1);
              setCookie("email",userData.email,1);
              window.location.href = './postmessage.html';
-             alert("naviagate");
+             console.log("naviagate");
          }
          
  }).fail(function ( data ) {
         Success = false;
-        alert("data");
+        console.log("data");
  });
 
 }
