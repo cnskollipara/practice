@@ -46,7 +46,7 @@ function dynamicDivCreation(data) {
                 console.log("hi");
                 
             var blockDiv, textSpan;  // used in the for loop
-
+			 var userExtId = getCookie("extid");
            var reqData = data.messages;
            var length = reqData.length;
            var parentDiv = document.createElement("div");
@@ -55,6 +55,7 @@ function dynamicDivCreation(data) {
             for(var i = 0; i < reqData.length; i++) {
             	var messageId = reqData[i].id;
             	var message = {"msgid" : messageId,"msginfo":reqData[i].info,"isPublic" : reqData[i].isPublic};
+				var msgOwner = reqData[i].msgOwner;
             	messagesArray[i] = {"messageId" : message};
             	var container = document.createElement("div");
                  container.className = "card gedf-card";
@@ -80,7 +81,7 @@ function dynamicDivCreation(data) {
                 mytabVContent.className = "btn-toolbar justify-content-between";
                 blockDiv.append(mytabVContent);
                 
-                
+                if(null != userExtId && null != msgOwner && userExtId == msgOwner ){
                 innerDiv = document.createElement("div");
                 innerDiv.className = "btn-group";
                 mytabVContent.append(innerDiv);
@@ -109,13 +110,27 @@ function dynamicDivCreation(data) {
                 itag.className = "fa fa-trash";
                 itag.id = messageId;
                 itag.onclick = function(){
-                	deletemessage(this.id);
+                	showdeletePopup(this.id);
                   };
                 button.append(itag);
+				}
                 
                 container.append(blockDiv);
                 parentDiv.append(container);
             }
+}
+
+function showdeletePopup(messageId){
+	document.getElementById("myModal1").style.display = "block";
+	document.getElementById("delete_id").value = messageId;
+}
+
+function deleteMessage(){
+	document.getElementById("myModal1").style.display = "none";
+	var messageid = document.getElementById("delete_id").value;
+	document.getElementById("delete_id").value = "";
+	deletepost(messageid);
+	
 }
 
 function removeDivs() {
@@ -133,7 +148,7 @@ function searchPost(){
 }
             
 
-function deletemessage(messageid){
+function deletepost(messageid){
 	 $.ajax({
 	     type: "DELETE",
 	     url: "/MessagingApp/message?extId="+getCookie("extid")+"&"+"msgId="+messageid,
