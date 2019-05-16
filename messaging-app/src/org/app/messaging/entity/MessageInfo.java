@@ -6,6 +6,8 @@ public class MessageInfo {
 	private Integer id;
 	private String info;
 	private String msgOwner;
+	private String userName;
+	private String userEmail;
 	private Boolean isPublic;
 	private Timestamp createdTS;
 	private Timestamp updatedTS;
@@ -28,6 +30,18 @@ public class MessageInfo {
 	}
 	public void setMsgOwner(String msgOwner) {
 		this.msgOwner = msgOwner;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 	public Boolean getIsPublic() {
 		return isPublic;
@@ -61,9 +75,9 @@ public class MessageInfo {
 	}
 	@Override
 	public String toString() {
-		return "MessageInfo [id=" + id + ", info=" + info + ", msgOwner=" + msgOwner + ", isPublic=" + isPublic
-				+ ", createdTS=" + createdTS + ", updatedTS=" + updatedTS + ", agent=" + agent + ", comment=" + comment
-				+ "]";
+		return "MessageInfo [id=" + id + ", info=" + info + ", msgOwner=" + msgOwner + ", userName=" + userName
+				+ ", userEmail=" + userEmail + ", isPublic=" + isPublic + ", createdTS=" + createdTS + ", updatedTS="
+				+ updatedTS + ", agent=" + agent + ", comment=" + comment + "]";
 	}
 
 }

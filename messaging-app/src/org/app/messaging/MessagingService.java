@@ -35,15 +35,19 @@ public class MessagingService {
 		UserMessages userMessages = new UserMessages();
 		List<MessageInfo> messages = new ArrayList<>();
 		userMessages.setExtId(extId);
-		String query = "SELECT * FROM t_message_info WHERE (f_msg_owner = ? OR f_is_public = 1) AND (? IS NULL OR f_info LIKE ?)";
-		Object[] params = new Object[] { extId, searchStr, "%"+searchStr+"%" };
+		String query = "SELECT msg.f_id, msg.f_info, msg.f_msg_owner, msg.f_is_public, msg.f_created_ts, msg.f_updated_ts, msg.f_agent, msg.f_comment, usr.f_email, usr.f_name "
+				+ "FROM t_message_info msg " + "JOIN t_user_info usr ON msg.f_msg_owner = usr.f_ext_id "
+				+ "WHERE (f_msg_owner = ? OR f_is_public = 1) AND (? IS NULL OR f_info LIKE ?)";
+		Object[] params = new Object[] { extId, searchStr, "%" + searchStr + "%" };
 		try {
 			ResultSet rs = Utility.getResultSet(query, params);
-			while(rs.next()) {
+			while (rs.next()) {
 				MessageInfo info = new MessageInfo();
 				info.setId(rs.getInt("f_id"));
 				info.setInfo(rs.getString("f_info"));
 				info.setMsgOwner(rs.getString("f_msg_owner"));
+				info.setUserName(rs.getString("f_name"));
+				info.setUserEmail(rs.getString("f_email"));
 				info.setIsPublic(rs.getBoolean("f_is_public"));
 				info.setCreatedTS(rs.getTimestamp("f_created_ts"));
 				info.setUpdatedTS(rs.getTimestamp("f_updated_ts"));
