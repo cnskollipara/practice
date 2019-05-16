@@ -1,3 +1,4 @@
+src/org/app/messaging/entity/MessageInfo.java
 package org.app.messaging.entity;
 
 import java.sql.Timestamp;
@@ -82,6 +83,7 @@ public class MessageInfo {
 
 }
 ********************************************
+src/org/app/messaging/entity/Response.java
 package org.app.messaging.entity;
 
 public class Response<T> {
@@ -114,6 +116,7 @@ public class Response<T> {
 
 }
 ********************************************
+src/org/app/messaging/entity/UserInfo.java
 package org.app.messaging.entity;
 
 public class UserInfo {
@@ -202,6 +205,7 @@ public class UserInfo {
 	}
 }
 ********************************************
+src/org/app/messaging/entity/UserMessages.java
 package org.app.messaging.entity;
 
 import java.util.List;
@@ -229,6 +233,7 @@ public class UserMessages {
 
 }
 ********************************************
+src/org/app/messaging/LoginServlet.java
 package org.app.messaging;
 
 import java.io.IOException;
@@ -268,6 +273,7 @@ public class LoginServlet extends HttpServlet {
     }
 }
 ********************************************
+src/org/app/messaging/MessagingException.java
 package org.app.messaging;
 
 public class MessagingException extends Exception {
@@ -288,6 +294,7 @@ public class MessagingException extends Exception {
 
 }
 ********************************************
+src/org/app/messaging/MessagingService.java
 package org.app.messaging;
 
 import java.sql.ResultSet;
@@ -365,6 +372,7 @@ public class MessagingService {
 
 }
 ********************************************
+src/org/app/messaging/MessagingServlet.java
 package org.app.messaging;
 
 import java.io.IOException;
@@ -468,6 +476,7 @@ public class MessagingServlet extends HttpServlet {
 	}
 }
 ********************************************
+src/org/app/messaging/utility/Utility.java
 package org.app.messaging.utility;
 
 import java.io.IOException;
@@ -545,6 +554,7 @@ public class Utility {
 	}
 }
 ********************************************
+src/org/app/messaging/Validate.java
 package org.app.messaging;
 
 import java.sql.ResultSet;
