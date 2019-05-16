@@ -10,10 +10,7 @@ var password = document.getElementById("password").value;
  }
  var requestData = {"email" : username,"password" : password};
  var data = JSON.stringify(requestData);
- if(getCookie("extid") != null && getCookie("extid").length > 0) {
-     window.location.href = './postmessage.html';
-     return;
- }
+ verifyIfUserLoggedIn();
  $.ajax({
      type: "POST",
      url: "/MessagingApp/login",
@@ -44,6 +41,12 @@ var password = document.getElementById("password").value;
 
 }
 	
+function verifyIfUserLoggedIn() {
+	if(getCookie("extid") != null && getCookie("extid").length > 0) {
+	     window.location.href = './postmessage.html';
+	     return;
+	 }
+}
 function setCookie(cname,cvalue,exdays) {
 	  var d = new Date();
 	  d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -66,3 +69,5 @@ function getCookie(cname) {
 	  }
 	  return "";
 	}
+
+window.onload = verifyIfUserLoggedIn;
