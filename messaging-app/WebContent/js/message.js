@@ -230,3 +230,18 @@ var modalclose = false;
 		        console.log("data");
 		 });
   }
+  
+  function logout() {
+	  setCookie("extid",null,0);
+      setCookie("name",null,0);
+      setCookie("email",null,0);
+      window.location.href = './index.html';
+  }
+  
+
+  function setCookie(cname,cvalue,exdays) {
+  	  var d = new Date();
+  	  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  	  var expires = "expires=" + d.toGMTString();
+  	  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  	}
