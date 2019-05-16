@@ -3,11 +3,11 @@ var messagesArray = new Array();
 function getMessages() {
 	console.log("onLoad"+getCookie("extid"));
 	var textSearch = document.getElementById("textSearch").value;
-	document.getElementById("profilename").value  = getCookie("name");
-	document.getElementById("profilemail").value  = getCookie("email");
+	$("#profilename").text(getCookie("name"));
+	$("#profilemail").text(getCookie("email"));
 	 $.ajax({
 	     type: "GET",
-	     url: "/messaging-app/message?extId="+getCookie("extid")+"&"+"searchStr="+textSearch,
+	     url: "/MessagingApp/message?extId="+getCookie("extid")+"&"+"searchStr="+textSearch,
 	     contentType: "application/json",
 	     async: false, //add this
 	   }).done(function ( data ) {
@@ -23,6 +23,7 @@ function getMessages() {
 }
 
 window.onload = getMessages;
+
 function getCookie(cname) {
 	  var name = cname + "=";
 	  var decodedCookie = decodeURIComponent(document.cookie);
@@ -135,7 +136,7 @@ function searchPost(){
 function deletemessage(messageid){
 	 $.ajax({
 	     type: "DELETE",
-	     url: "/messaging-app/message?extId="+getCookie("extid")+"&"+"msgId="+messageid,
+	     url: "/MessagingApp/message?extId="+getCookie("extid")+"&"+"msgId="+messageid,
 	     contentType: "application/json",
 	     async: false, //add this
 	   }).done(function ( data ) {
@@ -206,7 +207,7 @@ var modalclose = false;
   function createorUpdatepost(data){
 	  $.ajax({
 		     type: "POST",
-		     url: "/messaging-app/message",
+		     url: "/MessagingApp/message",
 		     contentType: "application/json",
 		     data:data,
 		     async: false, //add this

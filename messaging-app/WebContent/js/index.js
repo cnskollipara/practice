@@ -10,16 +10,20 @@ var password = document.getElementById("password").value;
  }
  var requestData = {"email" : username,"password" : password};
  var data = JSON.stringify(requestData);
+ if(getCookie("extid") != null || getCookie("extid").length > 0) {
+     window.location.href = './postmessage.html';
+     return;
+ }
  $.ajax({
      type: "POST",
-     url: "/messaging-app/login",
+     url: "/MessagingApp/login",
      contentType: "application/json",
      data:data,
      async: false, //add this
    }).done(function ( data ) {
          Success = true;
          if(data.data == undefined || data.statusMessage == "USER_NOT_AVAILABLE"){
-        	console.log("user not available");
+        	alert("Invalid User");
          }else{
         	 console.log("Success"+ JSON.stringify(data));
              
