@@ -10,7 +10,7 @@ var password = document.getElementById("password").value;
  }
  var requestData = {"email" : username,"password" : password};
  var data = JSON.stringify(requestData);
- if(getCookie("extid") != null || getCookie("extid").length > 0) {
+ if(getCookie("extid") != null && getCookie("extid").length > 0) {
      window.location.href = './postmessage.html';
      return;
  }
