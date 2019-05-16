@@ -9,7 +9,7 @@
   <script type="text/javascript" src="js/message.js"></script>
         
 <nav class="navbar navbar-light bg-white">
-        <a href="#" class="navbar-brand">Bootsbook</a>
+        <a href="#" class="navbar-brand">University of Central Lancashire</a>
         <form class="form-inline">
             <div class="input-group">
                 <input type="text" class="form-control" id="textSearch" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -83,7 +83,7 @@
      <div class="dropdown">
          <div class="custom-control custom-checkbox">
 								    <input type="checkbox" class="custom-control-input" id="modalcheckbox">
-								    <label class="custom-control-label" for="defaultUnchecked">Public</label>
+								    <label class="custom-control-label" for="modalcheckbox">Public</label>
 								</div>
                              
                         </div>
@@ -91,3 +91,14 @@
 
 </div>
     
+ <div id="myModal1" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeDeleteModal()">&times;</span>
+    <span id="delete_id" style="display:none"> </span>
+    <p id="messageid_id"> Are you sure You want to delete </p>
+    <div class="btn-group">
+                            <input type="button" name="submiting" class="btn btn-primary" value="Delete" onClick="deleteMessage()">
+                            <input type="button" name="submiting" class="btn btn-primary" value="Cancel" onClick="closeDeleteModal()">
+                            </div>
+  </div>
+  </div>
