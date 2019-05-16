@@ -6,6 +6,8 @@ public class MessageInfo {
 	private Integer id;
 	private String info;
 	private String msgOwner;
+	private String userName;
+	private String userEmail;
 	private Boolean isPublic;
 	private Timestamp createdTS;
 	private Timestamp updatedTS;
@@ -28,6 +30,18 @@ public class MessageInfo {
 	}
 	public void setMsgOwner(String msgOwner) {
 		this.msgOwner = msgOwner;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 	public Boolean getIsPublic() {
 		return isPublic;
@@ -61,13 +75,13 @@ public class MessageInfo {
 	}
 	@Override
 	public String toString() {
-		return "MessageInfo [id=" + id + ", info=" + info + ", msgOwner=" + msgOwner + ", isPublic=" + isPublic
-				+ ", createdTS=" + createdTS + ", updatedTS=" + updatedTS + ", agent=" + agent + ", comment=" + comment
-				+ "]";
+		return "MessageInfo [id=" + id + ", info=" + info + ", msgOwner=" + msgOwner + ", userName=" + userName
+				+ ", userEmail=" + userEmail + ", isPublic=" + isPublic + ", createdTS=" + createdTS + ", updatedTS="
+				+ updatedTS + ", agent=" + agent + ", comment=" + comment + "]";
 	}
 
 }
-*****************************
+********************************************
 package org.app.messaging.entity;
 
 public class Response<T> {
@@ -99,7 +113,7 @@ public class Response<T> {
 	}
 
 }
-*****************************
+********************************************
 package org.app.messaging.entity;
 
 public class UserInfo {
@@ -187,7 +201,7 @@ public class UserInfo {
 				+ updatedTS + ", agent=" + agent + ", comment=" + comment + "]";
 	}
 }
-*****************************
+********************************************
 package org.app.messaging.entity;
 
 import java.util.List;
@@ -214,7 +228,7 @@ public class UserMessages {
 	}
 
 }
-*****************************
+********************************************
 package org.app.messaging;
 
 import java.io.IOException;
@@ -253,7 +267,7 @@ public class LoginServlet extends HttpServlet {
         Utility.writeResponse(response, res);
     }
 }
-*****************************
+********************************************
 package org.app.messaging;
 
 public class MessagingException extends Exception {
@@ -273,7 +287,7 @@ public class MessagingException extends Exception {
 	}
 
 }
-*****************************
+********************************************
 package org.app.messaging;
 
 import java.sql.ResultSet;
@@ -311,14 +325,19 @@ public class MessagingService {
 		UserMessages userMessages = new UserMessages();
 		List<MessageInfo> messages = new ArrayList<>();
 		userMessages.setExtId(extId);
-		String query = "SELECT * FROM t_message_info WHERE (f_msg_owner = ? OR f_is_public = 1) AND (? IS NULL OR f_info LIKE ?)";
-		Object[] params = new Object[] { extId, searchStr, "%"+searchStr+"%" };
+		String query = "SELECT msg.f_id, msg.f_info, msg.f_msg_owner, msg.f_is_public, msg.f_created_ts, msg.f_updated_ts, msg.f_agent, msg.f_comment, usr.f_email, usr.f_name "
+				+ "FROM t_message_info msg " + "JOIN t_user_info usr ON msg.f_msg_owner = usr.f_ext_id "
+				+ "WHERE (f_msg_owner = ? OR f_is_public = 1) AND (? IS NULL OR f_info LIKE ?)";
+		Object[] params = new Object[] { extId, searchStr, "%" + searchStr + "%" };
 		try {
 			ResultSet rs = Utility.getResultSet(query, params);
-			while(rs.next()) {
+			while (rs.next()) {
 				MessageInfo info = new MessageInfo();
+				info.setId(rs.getInt("f_id"));
 				info.setInfo(rs.getString("f_info"));
 				info.setMsgOwner(rs.getString("f_msg_owner"));
+				info.setUserName(rs.getString("f_name"));
+				info.setUserEmail(rs.getString("f_email"));
 				info.setIsPublic(rs.getBoolean("f_is_public"));
 				info.setCreatedTS(rs.getTimestamp("f_created_ts"));
 				info.setUpdatedTS(rs.getTimestamp("f_updated_ts"));
@@ -345,7 +364,7 @@ public class MessagingService {
 	}
 
 }
-*****************************
+********************************************
 package org.app.messaging;
 
 import java.io.IOException;
@@ -448,7 +467,7 @@ public class MessagingServlet extends HttpServlet {
 		Utility.writeResponse(response, res);
 	}
 }
-*****************************
+********************************************
 package org.app.messaging.utility;
 
 import java.io.IOException;
@@ -525,7 +544,7 @@ public class Utility {
 		return jsonObject;
 	}
 }
-*****************************
+********************************************
 package org.app.messaging;
 
 import java.sql.ResultSet;
@@ -578,4 +597,4 @@ public class Validate {
 		}
 	}
 }
-*****************************
+********************************************
